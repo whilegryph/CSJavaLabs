@@ -34,7 +34,7 @@ public class CafeWall {
    public static void grid(int x, int y, int pairsNum, int boxSize, int offset) {
       for (int i = 1, down = 0; i <= pairsNum; i++) {
          singleRow(x, y + down + (2 * MORTAR * (i - 1)), pairsNum, boxSize);
-         singleRow(x + offset, y + boxSize + down + MORTAR + (2 * MORTAR (i - 1)), pairsNum, boxSize);
+         singleRow(x + offset, y + boxSize + down + MORTAR + (2 * MORTAR * (i - 1)), pairsNum, boxSize);
          down += 2*boxSize;
       }
    }
