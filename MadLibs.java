@@ -69,7 +69,7 @@ public class MadLibs {
     // Identifies if a line in a file has a filler space in it, prompts the user to fill that space,
     // and returns the newly created line.
     public static String placeholders(String output) {
-        if (output.contains("<") && output.contains(">")) {
+        while (output.contains("<") && output.contains(">")) {
             String filler = output.substring(output.indexOf("<") + 1, output.indexOf(">"));
 
             // Checks for a hyphen in a filler word and replaces it with a space
@@ -78,8 +78,9 @@ public class MadLibs {
             }
 
             // Accommodates for cases where the filler word begins with a vowel
-            if (filler.charAt(0) == 'a' || filler.charAt(0) == 'e' || filler.charAt(0) == 'i' ||
-                    filler.charAt(0) == 'o' || filler.charAt(0) == 'u') {
+            if ((filler.substring(0,1).equalsIgnoreCase("a") || filler.substring(0,1).equalsIgnoreCase("e")
+                    || filler.substring(0,1).equalsIgnoreCase("i") || filler.substring(0,1).equalsIgnoreCase("o")
+                    || filler.substring(0,1).equalsIgnoreCase("u")) {
                 System.out.print("Please type an " + filler + ": ");
             } else {
                 System.out.print("Please type a " + filler + ": ");
@@ -90,8 +91,7 @@ public class MadLibs {
             String filled = userFill.nextLine();
 
             // Changes the file line to include the filled space
-            output = output.replace(output.substring(output.indexOf("<"), output.indexOf(">") + 1),
-                    filled);
+            output = output.replace(output.substring(output.indexOf("<"), output.indexOf(">") + 1), filled);
         }
         return output;
     }
