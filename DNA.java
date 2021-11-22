@@ -51,7 +51,6 @@ public class DNA {
         double massTotal = massPercentage(mass, nucleotides, garboge);
         out.println("Nucleotides: " + currentLines[1].toUpperCase());
         out.println("Nuc. Counts: " + Arrays.toString(nucleotides));
-        // ideally should be printf
         out.println("Total Mass%: " + Arrays.toString(mass) + " of " + massTotal);
         out.println("Codon List: " + Arrays.toString(zeCodons));
         boolean protein = proteinGeneCalculator(zeCodons, mass);
@@ -117,8 +116,6 @@ public class DNA {
         return garboge;
     }
 
-
-    // NOT WORKING
     // Calculates if a DNA sequence is a protein.
     public static boolean proteinGeneCalculator(String[] zeCodons, double[] mass) {
         boolean protein = zeCodons.length >= MIN_CODONS && zeCodons[0].equals("ATG") && (zeCodons[zeCodons.length - 1].equals("TAA") ||
