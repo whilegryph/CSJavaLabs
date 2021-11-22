@@ -1,3 +1,8 @@
+// William Greiner, Jason Wild, Morgan Kramer
+// 11/23/21
+// CS 141
+// Lab 6 - DNA
+
 import java.util.*;
 import java.io.*;
 
@@ -29,12 +34,13 @@ public class DNA {
 
             readFiles(inputRead, out, currentLines);
             nucleotideOutput(out, currentLines);
+            out.println();
 
         }
     }
 
     // Reads the file and outputs everything to an output file.
-    public static void nucleotideOutput(PrintStream out, String[] currentLines) throws FileNotFoundException {
+    public static void nucleotideOutput(PrintStream out, String[] currentLines) {
         int[] nucleotides = new int[UNIQUE_NUCL];
         double[] mass = new double[UNIQUE_NUCL];
         String proteinYN = "NO";
@@ -56,19 +62,19 @@ public class DNA {
     }
 
     public static void readFiles(Scanner input, PrintStream out, String[] currentLines) {
-        if (input.hasNextLine()) {
             String lineOne = input.nextLine();
             currentLines[0] = lineOne;
             out.println("Region Name: " + lineOne);
-            String lineTwo = input.nextLine();
-            currentLines[1] = lineTwo;
-        }
+            if (input.hasNextLine()) {
+                String lineTwo = input.nextLine();
+                currentLines[1] = lineTwo;
+            }
     }
 
     // Calculates how many codons are in a DNA sequence.
     public static void codonCalculator(String currentLine, String[] zeCodons) {
-        for (int i = 0; i < currentLine.length()/NUCL_PER_CODON - 1; i++) {
-            zeCodons[i] += currentLine.substring((i * NUCL_PER_CODON) + NUCL_PER_CODON);
+        for (int i = 0; i < currentLine.length()/NUCL_PER_CODON; i++) {
+            zeCodons[i] = currentLine.toUpperCase().substring((i * NUCL_PER_CODON), (i * NUCL_PER_CODON) + NUCL_PER_CODON);
         }
     }
 
@@ -77,7 +83,7 @@ public class DNA {
         double massTotal = 0;
 
         for (int i = 0; i <= 3; i++) {
-            mass[i] = (nucleotides[i] * NUCL_MASS[i]);
+            mass[i] = nucleotides[i] * NUCL_MASS[i];
             massTotal += mass[i];
         }
         massTotal += garboge * 100.0;
@@ -85,7 +91,7 @@ public class DNA {
             mass[i] = (mass[i]/massTotal)*100;
             mass[i] = Math.round(mass[i]*10.0)/10.0;
         }
-        return massTotal;
+        return Math.round(massTotal * 10.0)/10.0;
     }
 
     // Counts how many of each nucleotide are present in a nucleotide sequence.
@@ -111,17 +117,14 @@ public class DNA {
         return garboge;
     }
 
+
+    // NOT WORKING
     // Calculates if a DNA sequence is a protein.
     public static boolean proteinGeneCalculator(String[] zeCodons, double[] mass) {
-        boolean protein = false;
+        boolean protein = zeCodons.length >= MIN_CODONS && zeCodons[0].equals("ATG") && (zeCodons[zeCodons.length - 1].equals("TAA") ||
+                (zeCodons[zeCodons.length - 1].equals("TAG") || (zeCodons[zeCodons.length - 1].equals("TGA"))));
 
-        if (zeCodons.length >= MIN_CODONS && zeCodons[0].equals("ATG") && (zeCodons[zeCodons.length-1].equals("TAA") ||
-                (zeCodons[zeCodons.length-1].equals("TAG") || (zeCodons[zeCodons.length-1].equals("TGA"))))) {
-            protein = true;
-        }
-
-        // original didn't include this
-        if (protein && !((mass[1] * mass[2]) > MIN_MASS_CG)) {
+        if (protein && !((mass[1] + mass[2]) > MIN_MASS_CG)) {
             protein = false;
         }
 
